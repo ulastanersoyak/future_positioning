@@ -5,31 +5,26 @@ import serial
 
 if __name__ == "__main__":
     ser = serial.Serial(
-        port='/dev/serial0',
+        port="/dev/serial0",
         baudrate=9600,
         parity=serial.PARITY_NONE,
         stopbits=serial.STOPBITS_ONE,
         bytesize=serial.EIGHTBITS,
-        xonxoff=False,
-        rtscts=False,
-        dsrdtr=False
+        timeout=1
     )
     if not ser.is_open:
         ser.open()
     ser.reset_input_buffer()
     bit_no = 0
     try:
-        bits = []
         while(1):
-            bit = ser.read_all()
-            bits.append(bit)
-            if(len(bits) == 9):
-                print(f"bit{bit_no} := {bits}")
-                bits.clear()
+            line = ser.readline().decode("utf-8").strip()
+            if(line):
+                print(f"bit{bit_no} := {line}")
                 bit_no+=1
     except KeyboardInterrupt: 
         exit(0)
-    except:
-     print("err") 
+    except Exception as e:
+        print("err := {e}") 
     finally:
         ser.close()
