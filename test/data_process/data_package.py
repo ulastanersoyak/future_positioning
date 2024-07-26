@@ -8,6 +8,7 @@ class utm:
         self.latitude = latitude
 
 
+
 class data_package:
 
     def __init__(self, location: utm, unix_time: int):
