@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.22)
 
 if (NOT DEFINED CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 23)
+  set(CMAKE_CXX_STANDARD 20)
 endif()
 
-project(project_name VERSION 0.0.0 LANGUAGES CXX)
+project(gps_location_estimator VERSION 0.0.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -38,3 +38,7 @@ endif()
 if(CMAKE_BUILD_TYPE STREQUAL Release)
   add_compile_options(-Ofast)
 endif()
+
+add_subdirectory(src)
+
+add_subdirectory(test/cpp)

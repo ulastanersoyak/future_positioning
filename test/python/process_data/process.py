@@ -5,7 +5,7 @@ from data_package import data_package as package
 
 
 if __name__ == "__main__":
-    with open("/home/ubuntu/gps_location_estimator/test/data/data.txt", "r") as file:
+    with open("../get_data/data.txt", "r") as file:
             for line in file:
                   header, _, data = line.partition("$")[2].partition(",")
                   previous_package = package(0,0,0)
