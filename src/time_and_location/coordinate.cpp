@@ -13,3 +13,11 @@ operator== (const coordinate &coord1, const coordinate &coord2)
          && (coord1.degree == coord2.degree);
   // clang-format on
 }
+
+double
+coordinate_to_decimal (const coordinate &coord)
+{
+  return ((coord.indicator == 'W') || (coord.indicator == 'S'))
+             ? coord.degree + (coord.minute / 60) * -1
+             : (coord.degree + (coord.minute / 60));
+}

@@ -29,6 +29,7 @@ public:
   // clang-format on
 
   friend bool operator== (const rmc &rmc1, const rmc &rmc2);
+  friend class utm;
 };
 
 #endif // !RMC_HPP

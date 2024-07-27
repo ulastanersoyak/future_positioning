@@ -11,6 +11,7 @@ struct coordinate
   char indicator{ '_' };
 };
 
+double coordinate_to_decimal (const coordinate &coord);
 bool operator== (const coordinate &coord1, const coordinate &coord2);
 
 #endif // !COORDINATE_HPP
