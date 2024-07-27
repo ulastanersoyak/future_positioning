@@ -9,17 +9,16 @@
 
 class rmc
 {
-  utc time_;
+  utc time_{ 0, 0, 0 };
   coordinate latitude_{};
   coordinate longitude_{};
   float speed_over_ground_knot_{ 0 };
-  float course_over_ground_degree_{ 0 };
-  date date_;
+  date date_{};
   std::uint8_t checksum{ 0 };
   char fix_status_{ '_' };
 
 public:
-  constexpr explicit rmc (std::string_view nmea_sentence);
+  explicit rmc (std::string_view nmea_sentence) noexcept (false);
 };
 
 #endif // !RMC_HPP
