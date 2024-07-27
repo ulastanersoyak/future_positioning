@@ -41,3 +41,12 @@ rmc::rmc (std::string_view nmea_sentence) noexcept (false)
       tokens.at (10).substr (tokens.at (10).size () - 2), nullptr, 16));
   this->fix_status_ = tokens.at (2).at (0);
 };
+
+bool
+operator== (const rmc &rmc1, const rmc &rmc2)
+{
+  return (rmc1.time_ == rmc2.time_) && (rmc1.latitude_ == rmc2.latitude_)
+         && (rmc1.longitude_ == rmc2.longitude_) && (rmc1.date_ == rmc2.date_)
+         && (rmc1.checksum == rmc2.checksum)
+         && (rmc1.fix_status_ == rmc2.fix_status_);
+}

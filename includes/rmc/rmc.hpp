@@ -19,6 +19,16 @@ class rmc
 
 public:
   explicit rmc (std::string_view nmea_sentence) noexcept (false);
+
+  // clang-format off
+  rmc (utc time, coordinate lat, coordinate lon, float speed, date d,
+       std::uint8_t checksum_, char fix)
+      : time_ (time), latitude_ (lat), longitude_ (lon),
+        speed_over_ground_knot_ (speed), date_ (d), checksum (checksum_),
+        fix_status_ (fix){}
+  // clang-format on
+
+  friend bool operator== (const rmc &rmc1, const rmc &rmc2);
 };
 
 #endif // !RMC_HPP
