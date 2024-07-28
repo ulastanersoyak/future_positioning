@@ -2,7 +2,6 @@
 #include "time_and_location/coordinate.hpp"
 
 #include <cmath>
-#include <iostream>
 #include <numbers>
 
 inline constexpr double WGS84_SEMI_MAJOR_AXIS{ 6378137.0 };
@@ -16,7 +15,7 @@ inline constexpr double FALSE_EASTING{ 500000 };
 inline constexpr double FALSE_NORTHING_NORTH{ 0 };
 inline constexpr double FALSE_NORTHING_SOUTH{ 10000000 };
 
-utm::utm (const rmc &rmc_)
+utm::utm (const rmc &rmc_) : time_ (rmc_.time_)
 {
   double latitude = coordinate_to_decimal (rmc_.latitude_);
   double longitude = coordinate_to_decimal (rmc_.longitude_);
@@ -70,9 +69,6 @@ utm::utm (const rmc &rmc_)
                                      + (5 - T + 9 * C) * std::pow (A, 4) / 24
                                      + (61 - 58 * T + std::pow (T, 2))
                                            * std::pow (A, 6) / 720));
-
-  std::cout << "easting: " << E << ' ' << "northing: " << N_coord << ' '
-            << "zonenum: " << ' ' << zone;
   this->easting_ = E;
   this->northing_ = N_coord;
   this->zone_number_ = zone;
