@@ -48,7 +48,7 @@ main ()
     utm current{};
     utm prev{};
     bool is_first_package { true };
-    while ( getline(file, line) && (line != ".") ) 
+    while ( getline(file, line) ) 
     {
         if (line.find("GNRMC") != std::string::npos)
         {
@@ -60,10 +60,12 @@ main ()
                     prev = current;
                     is_first_package = false;   
                 }
-                [[maybe_unused]] auto distance = current.get_distance(prev);
-                [[maybe_unused]] auto time_diff = current.get_time_diff_sec(prev);
-                [[maybe_unused]] auto direct = current.get_direction(prev);
-                std::cout<<' ';
+                 auto distance = current.get_distance(prev);
+                 auto time_diff = current.get_time_diff_sec(prev);
+                 [[maybe_unused]] auto direct = current.get_direction(prev);
+                 [[maybe_unused]] auto estimated_speed_ms = distance / static_cast<double>(time_diff);
+                 std::cout<< line << '\n';
+                 prev = current;
             }
             catch(...)
             {

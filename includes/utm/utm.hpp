@@ -10,13 +10,14 @@
 
 class utm
 {
+
+public:
   double easting_{ 0 };
   double northing_{ 0 };
   std::uint32_t zone_number_{ 0 };
   char zone_char_{ '_' };
   utc time_{ 0, 0, 0 };
 
-public:
   utm() = default;
   explicit utm (const rmc &rmc_);
   [[nodiscard]] std::size_t get_time_diff_sec (const utm &other) const noexcept;
