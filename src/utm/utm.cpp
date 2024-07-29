@@ -88,3 +88,29 @@ std::ostream& operator<<(std::ostream& os, const utm& utm) {
        "\n";
     return os;
 }
+
+[[nodiscard]] std::size_t utm::get_time_diff_sec(const utm &other) const noexcept
+{
+  return this->time_ - other.time_; 
+}
+
+[[nodiscard]] double utm::get_distance(const utm &other) const noexcept
+{
+  return std::sqrt(std::pow((this->easting_ - other.easting_), 2) + std::pow((this->northing_ - other.northing_), 2)); 
+}
+
+[[nodiscard]] direction utm::get_direction (const utm &other) const noexcept
+{
+   auto EW = (this->easting_ - other.easting_) > 0 ? DIREC::EAST : DIREC::WEST;
+   auto NS = (this->northing_ - other.northing_) > 0 ? DIREC::NORTH : DIREC::SOUTH;
+   auto hypotenuse = this->get_distance(other);
+   auto degree{ 0.0 }; 
+   if(NS == DIREC::NORTH){
+      degree = std::asin((other.easting_ - this->easting_)  / hypotenuse);
+   }
+   else
+   {
+      degree = std::asin((this->northing_ - other.northing_)  / hypotenuse);
+   }
+   return {NS, EW, degree};
+}

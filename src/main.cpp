@@ -43,21 +43,30 @@ main ()
     //     }
     // }
 
-    std::ifstream file("/home/ubuntu/gps_location_estimator/test/python/get_data/data.txt");
+    std::ifstream file ( "/home/ubuntu/gps_location_estimator/test/python/get_data/data.txt" );
     std::string line;
+    utm current{};
+    utm prev{};
+    bool is_first_package { true };
     while ( getline(file, line) && (line != ".") ) 
     {
-
         if (line.find("GNRMC") != std::string::npos)
         {
             try
             {
-                utm utm_((rmc(line)));
-                std::cout << utm_;
+                current = utm{rmc{line}};
+                if(is_first_package) [[unlikely]]
+                {
+                    prev = current;
+                    is_first_package = false;   
+                }
+                [[maybe_unused]] auto distance = current.get_distance(prev);
+                [[maybe_unused]] auto time_diff = current.get_time_diff_sec(prev);
+                [[maybe_unused]] auto direct = current.get_direction(prev);
+                std::cout<<' ';
             }
             catch(...)
             {
-
             }
         }
     }

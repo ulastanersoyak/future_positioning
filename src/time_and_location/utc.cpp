@@ -1,6 +1,6 @@
 #include "time_and_location/utc.hpp"
 
-[[nodiscard]] constexpr std::uint32_t
+[[nodiscard]] std::uint32_t
 utc::operator- (const utc &other) const noexcept
 {
   const auto this_seconds = static_cast<std::uint32_t> (
