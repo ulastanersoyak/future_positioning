@@ -4,6 +4,8 @@
 #include <compare>
 #include <cstdint>
 
+#include <iostream>
+
 class utc
 {
   std::uint8_t hour{ 0 };
@@ -20,7 +22,9 @@ public:
   [[nodiscard]] constexpr auto operator<=> (const utc &other) const noexcept
       = default;
 
-  [[nodiscard]] constexpr utc operator- (const utc &other) const noexcept;
+  [[nodiscard]] constexpr std::uint32_t operator- (const utc &other) const noexcept;
+
+  friend std::ostream& operator<<(std::ostream& os, const utc& utc);
 };
 
 #endif // !UTC_HPP

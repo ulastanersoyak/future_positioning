@@ -78,3 +78,13 @@ utm::utm (const rmc &rmc_) : time_ (rmc_.time_)
   this->zone_char_
       = letters.at (static_cast<std::size_t> ((latitude + 80) / 8));
 }
+
+std::ostream& operator<<(std::ostream& os, const utm& utm) {
+    os << "Easting: " << utm.easting_ << ", "
+       << "Northing: " << utm.northing_ << ", "
+       << "Zone Number: " << utm.zone_number_ << ", "
+       << "Zone Char: " << utm.zone_char_ << ", "
+       << "Time: " << utm.time_<<
+       "\n";
+    return os;
+}

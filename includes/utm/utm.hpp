@@ -4,6 +4,8 @@
 #include "rmc/rmc.hpp"
 #include "time_and_location/utc.hpp"
 
+#include <iostream>
+
 class utm
 {
   double easting_{ 0 };
@@ -14,6 +16,7 @@ class utm
 
 public:
   explicit utm (const rmc &rmc_);
+  friend std::ostream& operator<<(std::ostream& os, const utm& utm);
 };
 
 #endif // !UTM_HPP

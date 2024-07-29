@@ -14,8 +14,7 @@ gps::gps (std::string_view port_name, std::uint32_t baud_rate,
       port.set_option (boost::asio::serial_port_base::baud_rate (baud_rate));
       port.set_option (boost::asio::serial_port_base::parity (parity));
       port.set_option (boost::asio::serial_port_base::stop_bits (stop_bits));
-      port.set_option (
-          boost::asio::serial_port_base::character_size (char_size));
+      port.set_option (char_size);
     }
   catch (const std::exception &e)
     {
