@@ -19,12 +19,11 @@ public:
       : hour{ hour_ }, minute{ minute_ }, second{ second_ } {}
   // clang-format on
 
-  [[nodiscard]] auto operator<=> (const utc &other) const noexcept
-      = default;
+  [[nodiscard]] auto operator<=> (const utc &other) const noexcept = default;
 
   [[nodiscard]] std::uint32_t operator- (const utc &other) const noexcept;
 
-  friend std::ostream& operator<<(std::ostream& os, const utc& utc);
+  friend std::ostream &operator<< (std::ostream &os, const utc &utc);
 };
 
 #endif // !UTC_HPP
