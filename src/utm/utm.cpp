@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <numbers>
+#include <string>
 
 inline constexpr double WGS84_SEMI_MAJOR_AXIS{ 6378137.0 };
 inline constexpr double WGS84_FLATTENING{ 1.0 / 298.257223563 };
@@ -14,6 +15,8 @@ inline constexpr double SCALE_FACTOR{ 0.9996 };
 inline constexpr double FALSE_EASTING{ 500000 };
 inline constexpr double FALSE_NORTHING_NORTH{ 0 };
 inline constexpr double FALSE_NORTHING_SOUTH{ 10000000 };
+
+inline const std::string letters{ "CDEFGHJKLMNPQRSTUVWX" };
 
 utm::utm (const rmc &rmc_) : time_ (rmc_.time_)
 {
@@ -72,4 +75,6 @@ utm::utm (const rmc &rmc_) : time_ (rmc_.time_)
   this->easting_ = E;
   this->northing_ = N_coord;
   this->zone_number_ = zone;
+  this->zone_char_
+      = letters.at (static_cast<std::size_t> ((latitude + 80) / 8));
 }

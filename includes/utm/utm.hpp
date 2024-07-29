@@ -9,6 +9,7 @@ class utm
   double easting_{ 0 };
   double northing_{ 0 };
   std::uint32_t zone_number_{ 0 };
+  char zone_char_{ '_' };
   utc time_{ 0, 0, 0 };
 
 public:
