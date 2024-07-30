@@ -32,7 +32,8 @@ public:
   gps &operator= (const gps &) = delete;
   ~gps ();
 
-  std::string read ();
+  [[nodiscard]] std::string read ();
+  [[noreturn]] void work ();
 };
 
 #endif // GPS_HPP

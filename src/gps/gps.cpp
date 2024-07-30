@@ -1,4 +1,6 @@
 #include "gps/gps.hpp"
+#include "rmc/rmc.hpp"
+#include "utm/utm.hpp"
 
 #include <iostream>
 
@@ -33,7 +35,7 @@ gps::~gps ()
     }
 }
 
-std::string
+[[nodiscard]] std::string
 gps::read ()
 {
   boost::asio::streambuf buf;
@@ -42,4 +44,22 @@ gps::read ()
   std::string line;
   std::getline (is, line);
   return line;
+}
+
+[[noreturn]] void
+gps::work ()
+{
+  std::string line;
+  while (true)
+    {
+      line = this->read ();
+
+      if (!line.empty ())
+        {
+          if (line.find ("GNRMC") != std::string::npos)
+            {
+              utm utm_ ((rmc (line)));
+            }
+        }
+    }
 }

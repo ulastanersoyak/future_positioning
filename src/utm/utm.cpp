@@ -102,15 +102,16 @@ utm::get_distance (const utm &other) const noexcept
                     + std::pow ((this->northing_ - other.northing_), 2));
 }
 
-[[nodiscard]] direction
+[[nodiscard]] directional_info
 utm::get_direction (const utm &other) const noexcept
 {
-  auto EW = (this->easting_ - other.easting_) > 0 ? DIREC::EAST : DIREC::WEST;
-  auto NS
-      = (this->northing_ - other.northing_) > 0 ? DIREC::NORTH : DIREC::SOUTH;
+  auto EW = (this->easting_ - other.easting_) > 0 ? direction::EAST
+                                                  : direction::WEST;
+  auto NS = (this->northing_ - other.northing_) > 0 ? direction::NORTH
+                                                    : direction::SOUTH;
   auto hypotenuse = this->get_distance (other);
   auto degree{ 0.0 };
-  if (NS == DIREC::NORTH)
+  if (NS == direction::NORTH)
     {
       degree = std::asin ((other.easting_ - this->easting_) / hypotenuse);
     }

@@ -2,7 +2,7 @@
 #define UTM_HPP
 
 #include "rmc/rmc.hpp"
-#include "time_and_location/direction.hpp"
+#include "time_and_location/directional_info.hpp"
 #include "time_and_location/utc.hpp"
 
 #include <cstddef>
@@ -22,7 +22,8 @@ public:
   [[nodiscard]] std::size_t
   get_time_diff_sec (const utm &other) const noexcept;
   [[nodiscard]] double get_distance (const utm &other) const noexcept;
-  [[nodiscard]] direction get_direction (const utm &other) const noexcept;
+  [[nodiscard]] directional_info
+  get_direction (const utm &other) const noexcept;
   friend std::ostream &operator<< (std::ostream &os, const utm &utm);
 };
 
