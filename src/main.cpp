@@ -4,7 +4,6 @@
 
 #include <fstream>
 #include <iostream>
-#include <sstream>
 
 int
 main ()
@@ -43,8 +42,7 @@ main ()
   //     }
   // }
 
-  std::ifstream file (
-      "/home/ubuntu/gps_location_estimator/test/python/get_data/data.txt");
+  std::ifstream file ("../../test/python/get_data/data.txt");
   std::string line;
   utm current{};
   utm prev{};
@@ -66,6 +64,7 @@ main ()
               [[maybe_unused]] auto direct = current.get_direction (prev);
               [[maybe_unused]] auto estimated_speed_ms
                   = distance / static_cast<double> (time_diff);
+              std::cout << current;
               prev = current;
             }
           catch (...)
