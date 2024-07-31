@@ -17,7 +17,7 @@ def get_serial(port: str, baudrate: int, parity_bit : serial, stop_bit: serial, 
     return ser
 
 if __name__ == "__main__":
-    ser = get_serial(port = "/dev/serial0", 
+    ser = get_serial(port = "/dev/ttyAMA4", 
                      baudrate = 9600,
                      parity_bit = serial.PARITY_NONE, 
                      stop_bit = serial.STOPBITS_ONE, 

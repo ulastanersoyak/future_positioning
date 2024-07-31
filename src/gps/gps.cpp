@@ -1,6 +1,7 @@
 #include "gps/gps.hpp"
 #include "rmc/rmc.hpp"
 #include "utm/utm.hpp"
+#include "utility/queue.hpp"
 
 #include <iostream>
 
@@ -45,21 +46,37 @@ gps::read ()
   std::getline (is, line);
   return line;
 }
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <thread>         
+#include <chrono> 
 
+extern queue<utm> gps_data_queue;
 [[noreturn]] void
 gps::work ()
 {
+  std::string file_path = "../../test/python/get_data/data.txt";
+  std::ifstream file (file_path);
   std::string line;
   while (true)
     {
-      line = this->read ();
-
-      if (!line.empty ())
+      //line = this->read ();
+      //if (!line.empty ())
+      if (getline (file, line))
         {
           if (line.find ("GNRMC") != std::string::npos)
             {
+              try{
+
               utm utm_ ((rmc (line)));
+              gps_data_queue.push(utm_);
+              }
+              catch(...){
+                gps_data_queue.push(utm{});
+              }
             }
+          std::this_thread::sleep_for (std::chrono::seconds(1));
         }
     }
 }

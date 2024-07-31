@@ -5,11 +5,11 @@
 #include <mutex>
 #include <queue>
 
-template <typename contained> class Queue
+template <typename contained> class queue
 {
-  std::queue<contained> q;
-  mutable std::mutex mtx;
-  std::condition_variable cv;
+  std::queue<contained> q{};
+  mutable std::mutex mtx{};
+  std::condition_variable cv{};
 
 public:
   void
@@ -28,6 +28,10 @@ public:
     contained item = std::move (q.front ());
     q.pop ();
     return item;
+  }
+
+  [[nodiscard]] std::size_t size() const noexcept{
+      return q.size();
   }
 };
 
