@@ -1,10 +1,6 @@
 #include "gps/gps.hpp"
 #include "mti_630/mti_630.hpp"
-#include "rmc/rmc.hpp"
-#include "utm/utm.hpp"
-
-#include <fstream>
-#include <iostream>
+#include <thread>
 
 int
 main ()
@@ -23,6 +19,13 @@ main ()
                boost::asio::serial_port_base::stop_bits::one,
                boost::asio::serial_port_base::character_size (8));
 
-  gps_.work ();
-  mti.work ();
+  std::thread gps_thread (&gps::work, &gps_);
+  std::thread mti_thread (&mti_630::work, &mti);
+
+  while (true)
+    {
+    }
+  gps_thread.join ();
+  mti_thread.join ();
+  return 0;
 }

@@ -20,10 +20,10 @@ struct mti_data_package
   std::array<double, 2> lat_lon{ 0.0, 0.0 };
   double altitude{ 0.0 };
   utc time{ 0, 0, 0 };
+  std::uint32_t package_counter{ 0 };
+  std::uint32_t sample_fine_time{ 0 };
 
   mti_data_package ();
-
-public:
 };
 
 #endif // !MTI_DATA_PACKAGE_HPP
