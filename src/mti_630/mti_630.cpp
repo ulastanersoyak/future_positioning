@@ -62,8 +62,7 @@ extern queue<Xbus> imu_data_queue;
                 {
                     Xbus xbusData;
                     std::vector<uint8_t> rawData = packet.getRawData();
-                    // Create an instance of the Xbus struct
-                    DataPacketParser::parseDataPacket(rawData, xbusData); // Parse the raw packet data
+                    DataPacketParser::parseDataPacket(rawData, xbusData);
                     imu_data_queue.push(xbusData);
                     packet.reset();
                 }
