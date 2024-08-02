@@ -121,3 +121,12 @@ utm::get_direction (const utm &other) const noexcept
     }
   return { NS, EW, degree };
 }
+void utm::update_easting(std::uint32_t distance)
+{
+  this->easting_+=distance;
+}
+
+void utm::update_northing(std::uint32_t distance)
+{
+  this->northing_+=distance;
+}

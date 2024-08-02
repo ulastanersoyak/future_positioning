@@ -4,6 +4,7 @@
 #include "utm/utm.hpp"
 #include "mti_630/data_packet_parser.hpp"
 #include <thread>
+#include <chrono>
 #include <iostream>
 
 
@@ -19,12 +20,12 @@ main ()
   // $GNRMC,072336.00,A,3958.59380,N,03244.28403,E,0.053,,260724,,,A,V*18
   // clang-format on
 
-  //           GPIO 14-15 | 14->tx 15->rx
+  //           GPIO 14-15 | 14->tx 15->rx | 1hz
   gps gps_ ("/dev/ttyAMA0", 9600, boost::asio::serial_port_base::parity::none,
             boost::asio::serial_port_base::stop_bits::one,
             boost::asio::serial_port_base::character_size (8));
 
-  //           GPIO 8-9 | 9->tx 8->rx
+  //           GPIO 8-9 | 9->tx 8->rx | 100 hz
   mti_630 mti ("/dev/ttyAMA4", 115200,
                boost::asio::serial_port_base::parity::none,
                boost::asio::serial_port_base::stop_bits::one,
@@ -36,26 +37,45 @@ main ()
   utm future_utm{};
   utm current_utm{};
   utm prev_utm{};
-  bool is_first_package{ true };
+  bool is_first_gps_package{ true };
   double distance{ 0.0 };
   double time_diff { 0.0 };
   directional_info direct {};
   double estimated_speed_ms { 0.0 };
+
+  Xbus current_imu{ 0.0 };
+  Xbus prev_imu{ 0.0 };
+  bool is_first_imu_package{true};
   while (true)
     {
-      while(gps_data_queue.size() == 0){
-        auto imu_data = imu_data_queue.pop();
+      while(gps_data_queue.size() == 0)
+      {
+        current_imu = imu_data_queue.pop();
+        if (is_first_imu_package) [[unlikely]]
+        {
+          prev_imu = current_imu;
+          is_first_imu_package = false;
+        }
+
+        distance = current_utm.get_distance (prev_utm);
+        time_diff = current_utm.get_time_diff_sec (prev_utm);
+        direct = current_utm.get_direction (prev_utm);
+        estimated_speed_ms = distance / static_cast<double> (time_diff);
+
+        auto rate_of_turn_x = (std::abs(current_imu.rot[0] - prev_imu.rot[0]) > 0.01) ? current_imu.rot[0] - prev_imu.rot[0] : 0;
+        auto acc = (std::abs(current_imu.acc[0]) > 0.5) ? 0 : std::abs(current_imu.acc[0]) ;
+        auto new_speed = estimated_speed_ms + acc * 0.01;
+        auto new_speed_x = std::sin(direct.dir_degree + rate_of_turn_x);
+        auto new_speed_y = std::cos(direct.dir_degree + rate_of_turn_x);
+        current_utm.update_northing(new_speed_y * 0.01);
+        current_utm.update_easting(new_speed_x * 0.01);
       }
       current_utm = gps_data_queue.pop();
-      if (is_first_package) [[unlikely]]
+      if (is_first_gps_package) [[unlikely]]
       {
         prev_utm = current_utm;
-        is_first_package = false;
+        is_first_gps_package = false;
       }
-      distance = current_utm.get_distance (prev_utm);
-      time_diff = current_utm.get_time_diff_sec (prev_utm);
-      direct = current_utm.get_direction (prev_utm);
-      estimated_speed_ms = distance / static_cast<double> (time_diff);
       prev_utm = current_utm;
     }
   gps_thread.join ();

@@ -25,6 +25,8 @@ public:
   [[nodiscard]] directional_info
   get_direction (const utm &other) const noexcept;
   friend std::ostream &operator<< (std::ostream &os, const utm &utm);
+  void update_easting(std::uint32_t distance);
+  void update_northing(std::uint32_t distance);
 };
 
 #endif // !UTM_HPP
