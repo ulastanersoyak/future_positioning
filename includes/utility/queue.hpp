@@ -30,8 +30,10 @@ public:
     return item;
   }
 
-  [[nodiscard]] std::size_t size() const noexcept{
-      return q.size();
+  [[nodiscard]] std::size_t
+  size () const noexcept
+  {
+    return q.size ();
   }
 };
 
